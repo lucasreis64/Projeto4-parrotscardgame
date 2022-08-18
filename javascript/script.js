@@ -1,7 +1,6 @@
 let escolha = 10,
     baralho = [1, 2, 3, 4, 5, 6, 7],
     posicao = [],
-    final = false,
     par = 0,
     selecionado,
     select,
@@ -11,23 +10,23 @@ const tempo = 1000;
 const tabuleiro = document.querySelector('.tabuleiro');
 
 iniciarJogo();
-cartear();
-
 
 function iniciarJogo() {
+    par=0;rodada=0; posicao=[];jogada=0;
     do {
         if ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0)) {
             alert("Valor inválido, tente novamente!");
         }
         escolha = prompt("Escolha o número de cartas (somente quantidade par de 4 à 14):");
     } while ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0));
+    cartear();
 }
 
 function cartear() {
     let cont2 = 0;
     const tamanho = escolha;
     baralho.sort(comparador);
-    tabuleiro.style.width=`${largura()}px`;
+    tabuleiro.style.width = `${largura()}px`;
     for (let cont = 0; cont < tamanho; cont += 2) {
         posicao[cont] = criarcarta(baralho[cont2]);
         posicao[cont + 1] = criarcarta(baralho[cont2]);
@@ -36,8 +35,8 @@ function cartear() {
 
     posicao.sort(comparador);
     for (let cont = 0; cont < tamanho; cont++) {
-            posicao[cont] = tabuleiro.appendChild(posicao[cont]);
-    }   
+        posicao[cont] = tabuleiro.appendChild(posicao[cont]);
+    }
 }
 
 function criarcarta(num) {
@@ -91,9 +90,12 @@ function selecionarcarta() {
             } else {
                 removercarta();
             }
+        }      
+        else if (rodada==2 && this===select[0]){
+            rodada=0;
+            console.log('vamonessa')
         }
     }
-
     console.log('jogada:', jogada, '\nrodada:', rodada, '\nPar:', par)
 }
 
@@ -138,15 +140,35 @@ function fimdejogo() {
         const jogadas = jogada * 2;
         if (par == acabou) {
             alert(`Você ganhou em ${jogadas} jogadas!`);
+            let certo = 0;
+            do {
+            const final = prompt("Você gostaria de reiniciar a partida?");
+                if (final === 'não') {
+                    certo++;
+                    return 0;
+                    
+                }
+                if (final === 'sim') {
+                    deletartabuleiro();
+                    iniciarJogo();
+                    certo++;
+                }
+            } while (certo == 0);
         }
     }, tempinho);
 }
 
-function largura(){
-    const cartasfileira = escolha/2;
+function largura() {
+    const cartasfileira = escolha / 2;
     const gap = 34;
-    const quantidadegap = cartasfileira-1;
+    const quantidadegap = cartasfileira - 1;
     const largcarta = 117;
-    const larg = cartasfileira*largcarta+gap*quantidadegap;
+    const larg = cartasfileira * largcarta + gap * quantidadegap;
     return larg;
+}
+
+function deletartabuleiro() {
+    while (tabuleiro.firstChild) {
+        tabuleiro.removeChild(tabuleiro.firstChild);
+    }
 }
