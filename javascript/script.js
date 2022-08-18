@@ -1,13 +1,18 @@
 let escolha = 10,
     baralho = [1, 2, 3, 4, 5, 6, 7],
     posicao = [],
-    final = false;
-
+    final = false,
+    par = 0,
+    selecionado,
+    select,
+    rodada = 0;
+const tempo = 800;
 const superior = document.querySelector('.fileirasuperior');
 const inferior = document.querySelector('.fileirainferior');
 
 iniciarJogo();
 cartear();
+
 
 function iniciarJogo() {
     do {
@@ -22,7 +27,6 @@ function cartear() {
     let cont2 = 0;
     const tamanho = escolha;
     baralho.sort(comparador);
-
     for (let cont = 0; cont < tamanho; cont += 2) {
         posicao[cont] = criarcarta(baralho[cont2]);
         posicao[cont + 1] = criarcarta(baralho[cont2]);
@@ -30,10 +34,8 @@ function cartear() {
     }
 
     posicao.sort(comparador);
-
     for (let cont = 0; cont < tamanho; cont++) {
         if (cont < tamanho / 2) {
-            console.log(',37', posicao[cont])
             posicao[cont] = superior.appendChild(posicao[cont]);
         }
         if (cont >= tamanho / 2) {
@@ -61,9 +63,57 @@ function criarcarta(num) {
     carta.classList.add("carta");
     carta.appendChild(frente);
     carta.appendChild(costas);
+    carta.id = num;
+    carta.addEventListener("click", selecionarcarta);
     return carta;
 }
 
 function comparador() {
     return Math.random() - 0.5;
+}
+
+function selecionarcarta() {
+    if (rodada < 2) {
+        console.log(rodada);
+        rodada++;
+        const costas = this.querySelector('.costas');
+        const frente = this.querySelector('.frente');
+        this.classList.add("select");
+        costas.classList.add("selecionado");
+        frente.classList.add("selecionado");
+        selecionado = document.querySelectorAll(".selecionado");
+        select = document.querySelectorAll(".select");
+        console.log(selecionado.length, select.length);
+        if (select.length % 2 === 0) {
+            if (select[0].id === select[1].id) {
+                setTimeout(function () {
+                    for (let cont = 0; cont < selecionado.length; cont++) {
+                        selecionado[cont].classList.remove("selecionado");
+                        selecionado[cont].classList.add("iguais");
+                    }
+                    for (let cont = 0; cont < select.length; cont++) {
+                        select[cont].classList.remove("select");
+                    }
+                    par++;
+                    if (rodada == 2) {
+                        rodada = 0;
+                    }
+                }, tempo)
+
+            } else {
+                setTimeout(function () {
+                    for (let cont = 0; cont < selecionado.length; cont++) {
+                        selecionado[cont].classList.remove("selecionado");
+                    }
+                    for (let cont = 0; cont < select.length; cont++) {
+                        select[cont].classList.remove("select");
+                    }
+                    if (rodada == 2) {
+                        rodada = 0;
+                    }
+                }, tempo);
+            }
+        }
+    }
+
 }

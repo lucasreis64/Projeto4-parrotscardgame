@@ -57,10 +57,22 @@
     transform: rotateY(180deg);
 }
 
-.carta:hover .costas {
+.carta .costas.selecionado{
     transform: rotateY(0deg);
 }
 
-.carta:hover .frente {
+.carta .frente.selecionado {
+    transform: rotateY(-180deg);
+}
+
+.costas {
+    transform: rotateY(180deg);
+}
+
+.carta .costas.iguais{
+    transform: rotateY(0deg);
+}
+
+.carta .frente.iguais {
     transform: rotateY(-180deg);
 }
