@@ -22,6 +22,7 @@ function iniciarJogo() {
     rodada = 0;
     posicao = [];
     jogada = 0;
+    centesimos=0;
     do {
         if ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0)) {
             alert("Valor inválido, tente novamente!");
@@ -145,18 +146,21 @@ function fimdejogo() {
     const jogadas = jogada * 2;
     if (par == acabou) {
         clearInterval(centesimosid);
-        alert(`Você ganhou em ${jogadas} jogadas e ${tempofinal}!`);
+        alert(`Você ganhou em ${jogadas} jogadas no tempo de ${tempofinal}!`);
         let certo = 0;
         do {
-            const final = prompt("Você gostaria de reiniciar a partida?");
+            const final = prompt("Você gostaria de reiniciar a partida? (sim/não)");
             if (final === 'não') {
                 certo++;
                 return 0;
             }
-            if (final === 'sim') {
+            else if (final === 'sim') {
                 deletartabuleiro();
                 iniciarJogo();
                 certo++;
+            }
+            else {
+                alert("Resposta inválida: tente novamente!")
             }
         } while (certo == 0);
     }
@@ -179,12 +183,15 @@ function deletartabuleiro() {
 
 function cronometro() {
     centesimos++;
-    const segundos = parseInt(centesimos/100);
-    const cents = centesimos%100;
-    crono.innerHTML = `${segundos}:${cents} segundos`
-    tempofinal = crono.innerText;
+    let minutos = parseInt(centesimos/6000);
+    let segundos = parseInt((centesimos%6000)/100);
+    let cents = ((centesimos%6000)%100)%100;
+    if (minutos<10){minutos='0'+minutos;}
+    if (segundos<10){segundos='0'+segundos;}
+    if (cents<10){cents='0'+cents;}
+    crono.innerHTML = `${minutos}:${segundos}:${cents}`;
+    tempofinal = `${minutos}min e ${segundos},${cents}s`;
 }
-
 function intervalo() {
     const centesimo = 10;
     centesimosid = setInterval(cronometro, centesimo);
