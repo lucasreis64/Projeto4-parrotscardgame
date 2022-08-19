@@ -7,12 +7,16 @@ let escolha = 10,
     rodada = 0,
     jogada = 0;
 const tempo = 1000;
+const tempinho = 100;
 const tabuleiro = document.querySelector('.tabuleiro');
 
 iniciarJogo();
 
 function iniciarJogo() {
-    par=0;rodada=0; posicao=[];jogada=0;
+    par = 0;
+    rodada = 0;
+    posicao = [];
+    jogada = 0;
     do {
         if ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0)) {
             alert("Valor inválido, tente novamente!");
@@ -71,10 +75,10 @@ function selecionarcarta() {
         rodada++;
         const costas = this.querySelector('.costas');
         const frente = this.querySelector('.frente');
-        
+
         if (this.classList.contains("iguais")) {
             console.log(this)
-            rodada=0;
+            rodada = 0;
             return;
         } else {
             this.classList.add("select");
@@ -86,13 +90,17 @@ function selecionarcarta() {
 
         if (select.length % 2 == 0) {
             if (select[0].id === select[1].id) {
-                mantercarta();
+                setTimeout(mantercarta, tempo);
+                jogada++;
+                par++;
+                setTimeout(fimdejogo, tempinho);
             } else {
-                removercarta();
+                
+                setTimeout(removercarta, tempo);
+                jogada++;
             }
-        }      
-        else if (rodada==2 && this===select[0]){
-            rodada=0;
+        } else if (rodada == 2 && this === select[0]) {
+            rodada = 0;
             console.log('vamonessa')
         }
     }
@@ -100,26 +108,20 @@ function selecionarcarta() {
 }
 
 function mantercarta() {
-    setTimeout(function () {
-        for (let cont = 0; cont < selecionado.length; cont++) {
-            selecionado[cont].classList.remove("selecionado");
-            selecionado[cont].classList.add("iguais");
-        }
-        for (let cont = 0; cont < select.length; cont++) {
-            select[cont].classList.remove("select");
-            select[cont].classList.add("iguais");
-        }
-        if (rodada == 2) {
-            rodada = 0;
-        }
-    }, tempo);
-    jogada++;
-    par++;
-    fimdejogo();
+    for (let cont = 0; cont < selecionado.length; cont++) {
+        selecionado[cont].classList.remove("selecionado");
+        selecionado[cont].classList.add("iguais");
+    }
+    for (let cont = 0; cont < select.length; cont++) {
+        select[cont].classList.remove("select");
+        select[cont].classList.add("iguais");
+    }
+    if (rodada == 2) {
+        rodada = 0;
+    }
 }
 
 function removercarta() {
-    setTimeout(function () {
         for (let cont = 0; cont < selecionado.length; cont++) {
             selecionado[cont].classList.remove("selecionado");
         }
@@ -129,24 +131,20 @@ function removercarta() {
         if (rodada == 2) {
             rodada = 0;
         }
-    }, tempo);
-    jogada++;
 }
 
 function fimdejogo() {
-    const tempinho = tempo / 6;
-    setTimeout(function () {
         const acabou = escolha / 2;
         const jogadas = jogada * 2;
         if (par == acabou) {
             alert(`Você ganhou em ${jogadas} jogadas!`);
             let certo = 0;
             do {
-            const final = prompt("Você gostaria de reiniciar a partida?");
+                const final = prompt("Você gostaria de reiniciar a partida?");
                 if (final === 'não') {
                     certo++;
                     return 0;
-                    
+
                 }
                 if (final === 'sim') {
                     deletartabuleiro();
@@ -155,7 +153,6 @@ function fimdejogo() {
                 }
             } while (certo == 0);
         }
-    }, tempinho);
 }
 
 function largura() {
