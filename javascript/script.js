@@ -5,10 +5,15 @@ let escolha = 10,
     selecionado,
     select,
     rodada = 0,
-    jogada = 0;
+    jogada = 0,
+    centesimos=0,
+    centesimosid,
+    tempofinal;
+const crono= document.querySelector(".cronometro");
 const tempo = 1000;
 const tempinho = 100;
 const tabuleiro = document.querySelector('.tabuleiro');
+
 
 iniciarJogo();
 
@@ -24,6 +29,7 @@ function iniciarJogo() {
         escolha = prompt("Escolha o número de cartas (somente quantidade par de 4 à 14):");
     } while ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0));
     cartear();
+    intervalo();
 }
 
 function cartear() {
@@ -95,12 +101,12 @@ function selecionarcarta() {
                 par++;
                 setTimeout(fimdejogo, tempinho);
             } else {
-                
+
                 setTimeout(removercarta, tempo);
                 jogada++;
             }
         } else if (rodada == 2 && this === select[0]) {
-            rodada = 0;
+            setTimeout(rodada=1, tempo);
             console.log('vamonessa')
         }
     }
@@ -122,37 +128,38 @@ function mantercarta() {
 }
 
 function removercarta() {
-        for (let cont = 0; cont < selecionado.length; cont++) {
-            selecionado[cont].classList.remove("selecionado");
-        }
-        for (let cont = 0; cont < select.length; cont++) {
-            select[cont].classList.remove("select");
-        }
-        if (rodada == 2) {
-            rodada = 0;
-        }
+    for (let cont = 0; cont < selecionado.length; cont++) {
+        selecionado[cont].classList.remove("selecionado");
+    }
+    for (let cont = 0; cont < select.length; cont++) {
+        select[cont].classList.remove("select");
+    }
+    if (rodada == 2) {
+        rodada = 0;
+    }
 }
 
 function fimdejogo() {
-        const acabou = escolha / 2;
-        const jogadas = jogada * 2;
-        if (par == acabou) {
-            alert(`Você ganhou em ${jogadas} jogadas!`);
-            let certo = 0;
-            do {
-                const final = prompt("Você gostaria de reiniciar a partida?");
-                if (final === 'não') {
-                    certo++;
-                    return 0;
-
-                }
-                if (final === 'sim') {
-                    deletartabuleiro();
-                    iniciarJogo();
-                    certo++;
-                }
-            } while (certo == 0);
-        }
+    
+    const acabou = escolha / 2;
+    const jogadas = jogada * 2;
+    if (par == acabou) {
+        clearInterval(centesimosid);
+        alert(`Você ganhou em ${jogadas} jogadas e ${tempofinal}!`);
+        let certo = 0;
+        do {
+            const final = prompt("Você gostaria de reiniciar a partida?");
+            if (final === 'não') {
+                certo++;
+                return 0;
+            }
+            if (final === 'sim') {
+                deletartabuleiro();
+                iniciarJogo();
+                certo++;
+            }
+        } while (certo == 0);
+    }
 }
 
 function largura() {
@@ -168,4 +175,17 @@ function deletartabuleiro() {
     while (tabuleiro.firstChild) {
         tabuleiro.removeChild(tabuleiro.firstChild);
     }
+}
+
+function cronometro() {
+    centesimos++;
+    const segundos = parseInt(centesimos/100);
+    const cents = centesimos%100;
+    crono.innerHTML = `${segundos}:${cents} segundos`
+    tempofinal = crono.innerText;
+}
+
+function intervalo() {
+    const centesimo = 10;
+    centesimosid = setInterval(cronometro, centesimo);
 }
