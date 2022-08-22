@@ -1,28 +1,14 @@
-let escolha = 10,
-    baralho = [1, 2, 3, 4, 5, 6, 7],
-    posicao = [],
-    par = 0,
-    selecionado,
-    select,
-    rodada = 0,
-    jogada = 0,
-    centesimos=0,
-    centesimosid,
-    tempofinal;
+let escolha = 10, baralho = [1, 2, 3, 4, 5, 6, 7], posicao = [], par = 0, 
+selecionado, select, rodada = 0, jogada = 0, centesimos=0, centesimosid, tempofinal;
 const crono= document.querySelector(".cronometro");
 const tempo = 1000;
 const tempinho = 100;
 const tabuleiro = document.querySelector('.tabuleiro');
 
-
-iniciarJogo();
+setTimeout(iniciarJogo, tempinho);
 
 function iniciarJogo() {
-    par = 0;
-    rodada = 0;
-    posicao = [];
-    jogada = 0;
-    centesimos=0;
+    par = 0; rodada = 0; posicao = []; jogada = 0; centesimos=0;
     do {
         if ((escolha > 14 || escolha < 4 || escolha % 2 !== 0) || (escolha > 14 || escolha < 4 && escolha % 2 !== 0)) {
             alert("Valor inválido, tente novamente!");
@@ -32,7 +18,6 @@ function iniciarJogo() {
     cartear();
     intervalo();
 }
-
 function cartear() {
     let cont2 = 0;
     const tamanho = escolha;
@@ -43,13 +28,11 @@ function cartear() {
         posicao[cont + 1] = criarcarta(baralho[cont2]);
         cont2++;
     }
-
     posicao.sort(comparador);
     for (let cont = 0; cont < tamanho; cont++) {
         posicao[cont] = tabuleiro.appendChild(posicao[cont]);
     }
 }
-
 function criarcarta(num) {
     const frente = document.createElement("div");
     const costas = document.createElement("div");
@@ -72,11 +55,9 @@ function criarcarta(num) {
     carta.addEventListener("click", selecionarcarta);
     return carta;
 }
-
 function comparador() {
     return Math.random() - 0.5;
 }
-
 function selecionarcarta() {
     if (rodada < 2) {
         rodada++;
@@ -84,7 +65,6 @@ function selecionarcarta() {
         const frente = this.querySelector('.frente');
 
         if (this.classList.contains("iguais")) {
-            console.log(this)
             rodada = 0;
             return;
         } else {
@@ -102,18 +82,15 @@ function selecionarcarta() {
                 par++;
                 setTimeout(fimdejogo, tempinho);
             } else {
-
                 setTimeout(removercarta, tempo);
                 jogada++;
             }
         } else if (rodada == 2 && this === select[0]) {
             setTimeout(rodada=1, tempo);
-            console.log('vamonessa')
         }
     }
-    console.log('jogada:', jogada, '\nrodada:', rodada, '\nPar:', par)
+    console.log('jogada:', jogada, '\nrodada:', rodada, '\nPar:', par);
 }
-
 function mantercarta() {
     for (let cont = 0; cont < selecionado.length; cont++) {
         selecionado[cont].classList.remove("selecionado");
@@ -127,7 +104,6 @@ function mantercarta() {
         rodada = 0;
     }
 }
-
 function removercarta() {
     for (let cont = 0; cont < selecionado.length; cont++) {
         selecionado[cont].classList.remove("selecionado");
@@ -139,7 +115,6 @@ function removercarta() {
         rodada = 0;
     }
 }
-
 function fimdejogo() {
     
     const acabou = escolha / 2;
@@ -160,12 +135,11 @@ function fimdejogo() {
                 certo++;
             }
             else {
-                alert("Resposta inválida: tente novamente!")
+                alert("Resposta inválida: tente novamente!");
             }
         } while (certo == 0);
     }
 }
-
 function largura() {
     const cartasfileira = escolha / 2;
     const gap = 34;
@@ -174,13 +148,11 @@ function largura() {
     const larg = cartasfileira * largcarta + gap * quantidadegap;
     return larg;
 }
-
 function deletartabuleiro() {
     while (tabuleiro.firstChild) {
         tabuleiro.removeChild(tabuleiro.firstChild);
     }
 }
-
 function cronometro() {
     centesimos++;
     let minutos = parseInt(centesimos/6000);
