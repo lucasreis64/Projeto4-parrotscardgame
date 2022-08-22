@@ -75,7 +75,7 @@ function selecionarcarta() {
         selecionado = document.querySelectorAll(".selecionado");
         select = document.querySelectorAll(".select");
 
-        if (select.length % 2 == 0) {
+        if (select.length % 2 === 0) {
             if (select[0].id === select[1].id) {
                 setTimeout(mantercarta, tempo);
                 jogada++;
@@ -85,7 +85,7 @@ function selecionarcarta() {
                 setTimeout(removercarta, tempo);
                 jogada++;
             }
-        } else if (rodada == 2 && this === select[0]) {
+        } else if (rodada === 2 && this === select[0]) {
             setTimeout(rodada=1, tempo);
         }
     }
@@ -100,7 +100,7 @@ function mantercarta() {
         select[cont].classList.remove("select");
         select[cont].classList.add("iguais");
     }
-    if (rodada == 2) {
+    if (rodada === 2) {
         rodada = 0;
     }
 }
@@ -111,7 +111,7 @@ function removercarta() {
     for (let cont = 0; cont < select.length; cont++) {
         select[cont].classList.remove("select");
     }
-    if (rodada == 2) {
+    if (rodada === 2) {
         rodada = 0;
     }
 }
@@ -119,7 +119,7 @@ function fimdejogo() {
     
     const acabou = escolha / 2;
     const jogadas = jogada * 2;
-    if (par == acabou) {
+    if (par === acabou) {
         clearInterval(centesimosid);
         alert(`Você ganhou em ${jogadas} jogadas no tempo de ${tempofinal}!`);
         let certo = 0;
@@ -137,7 +137,7 @@ function fimdejogo() {
             else {
                 alert("Resposta inválida: tente novamente!");
             }
-        } while (certo == 0);
+        } while (certo === 0);
     }
 }
 function largura() {
